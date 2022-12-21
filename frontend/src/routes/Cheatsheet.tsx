@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ICheatsheet } from "../types";
 
-export const CheatsheetList = () => {
+export const Cheatsheet = () => {
   const [error, setError] = useState<null|Error>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [cheatsheets, setCheatsheets] = useState<ICheatsheet[]>([]);
+  const [cheatsheet, setCheatsheet] = useState<ICheatsheet>({});
+  const params = useParams();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/cheatsheets/")
+    fetch(`http://localhost:8000/api/cheatsheets/${params.id}/`)
       .then((res) => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
-          setCheatsheets(result);
+          setCheatsheet(result);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
@@ -30,13 +32,10 @@ export const CheatsheetList = () => {
     return <div>Loading...</div>;
   } else {
     return (
-      <ul>
-        {cheatsheets.map(cs => (
-          <li key={cs.id}>
-            {cs.title} {cs.description}
-          </li>
-        ))}
-      </ul>
+      <div className="cheatsheet">
+        <p>{cheatsheet.title}</p>
+        <p>{cheatsheet.description}</p>
+      </div>
     );
   }
-};
+}

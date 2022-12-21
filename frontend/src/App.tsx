@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheatsheetList } from './components/Cheatsheet';
+import { CheatsheetList } from './routes/CheatsheetList';
 
 function App() {
   return (
