@@ -1,0 +1,61 @@
+// 1.Actualizar propiedades de cheatsheet
+{
+  "title": "Cheatsheet title",
+  "description": "Cheatsheet description",
+  "score": 25
+}
+
+// 2. Actualizar propiedades de un Section (id = 17)
+{
+  "title": "Mi cheatsheet favorita",
+  "description": "Mi descripcion xd",
+  "score": 3,
+  "sections": [
+    {
+      "id": 1,
+      "title": "Mi seccion mas chevere",
+      "description": "descripcion xd",
+    }
+  ]
+}
+
+//3. Actualizar varias sections
+{
+    "title": "Mi cheatsheet favorita",
+    "description": "Mi descripcion xd",
+    "score": 3,
+    "sections": [
+      {
+        "id": 1,
+        "title": "Mi seccion mas chevere",
+        "description": "descripcion xd",
+        "lines": []
+      },
+      {
+        "id": 1,
+        "title": "Mi seccion mas chevere",
+        "description": "descripcion xd",
+        "lines": []
+      }
+    ]
+  }
+
+//4. Actualizar un section y agregar uno
+{
+    "title": "Mi cheatsheet favorita",
+    "description": "Mi descripcion xd",
+    "score": 3,
+    "sections": [
+      {
+        "id": 1,
+        "title": "Mi seccion mas chevere",
+        "description": "descripcion xd",
+        "lines": []
+      },
+      {
+        "title": "Mi seccion mas chevere",
+        "description": "descripcion xd",
+        "lines": []
+      }
+    ]
+  }
