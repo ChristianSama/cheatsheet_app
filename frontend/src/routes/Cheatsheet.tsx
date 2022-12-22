@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Sections from "../components/Sections";
 import { ICheatsheet } from "../types";
 
 export const Cheatsheet = () => {
@@ -16,9 +17,6 @@ export const Cheatsheet = () => {
           setIsLoaded(true);
           setCheatsheet(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -35,6 +33,7 @@ export const Cheatsheet = () => {
       <div className="cheatsheet">
         <p>{cheatsheet.title}</p>
         <p>{cheatsheet.description}</p>
+        <Sections sections={cheatsheet.sections}/>
       </div>
     );
   }
