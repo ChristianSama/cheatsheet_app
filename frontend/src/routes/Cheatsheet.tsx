@@ -1,10 +1,21 @@
+import React, { createContext } from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sections from "../components/Sections";
 import { ICheatsheet } from "../types";
 
+export interface ICheatsheetContext {
+  cheatsheet: ICheatsheet;
+  setCheatsheet: any;
+}
+
+export const CheatsheetContext = createContext<ICheatsheetContext>({
+  cheatsheet: {},
+  setCheatsheet: () => {},
+});
+
 export const Cheatsheet = () => {
-  const [error, setError] = useState<null|Error>(null);
+  const [error, setError] = useState<null | Error>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [cheatsheet, setCheatsheet] = useState<ICheatsheet>({});
   const params = useParams();
@@ -33,8 +44,10 @@ export const Cheatsheet = () => {
       <div className="cheatsheet">
         <p>{cheatsheet.title}</p>
         <p>{cheatsheet.description}</p>
-        <Sections sections={cheatsheet.sections}/>
+        <CheatsheetContext.Provider value={{ cheatsheet, setCheatsheet }}>
+          <Sections sections={cheatsheet.sections} />
+        </CheatsheetContext.Provider>
       </div>
     );
   }
-}
+};

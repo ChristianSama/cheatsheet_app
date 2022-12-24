@@ -23,8 +23,8 @@ interface SectionsProps {
 const Sections = ({sections}: SectionsProps) => {
   return (
     <StyledSections>
-      {sections?.map(({title, description, lines}) => (
-        <StyledSection>
+      {sections?.map(({id, title, description, lines}) => (
+        <StyledSection key={id}>
           <p>{title}</p>
           <p>{description}</p>
           <Lines lines={lines}/>
