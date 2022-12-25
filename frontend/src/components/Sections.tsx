@@ -1,3 +1,4 @@
+import produce from "immer";
 import React, { ChangeEvent, useContext } from "react";
 import styled from "styled-components";
 import { CheatsheetContext } from "../routes/Cheatsheet";
@@ -30,13 +31,11 @@ const Sections = ({ sections }: SectionsProps) => {
     event: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    setCheatsheet((prev: ICheatsheet) => {
-      prev.sections![index][event.target.className as SectionKeys] =
-        event.target.value;
-      return {
-        ...prev,
-      };
-    });
+    setCheatsheet(
+      produce((draft) => {
+        draft.sections![index][event.target.className as SectionKeys] = event.target.value;
+      })
+    )
   };
 
   return (
@@ -59,7 +58,7 @@ const Sections = ({ sections }: SectionsProps) => {
               handleSectionChange(event, index);
             }}
           />
-          <Lines lines={lines} />
+          <Lines lines={lines} sectionIndex={index}/>
         </StyledSection>
       ))}
     </StyledSections>

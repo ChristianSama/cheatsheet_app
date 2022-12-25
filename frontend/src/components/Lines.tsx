@@ -2,6 +2,7 @@ import { ChangeEvent, useContext } from "react";
 import styled from "styled-components";
 import { CheatsheetContext } from "../routes/Cheatsheet";
 import { ICheatsheet, ILine, ISection } from "../types";
+import { produce } from "immer";
 
 const StyledLine = styled.div`
   background-color: pink;
@@ -10,14 +11,24 @@ const StyledLine = styled.div`
 
 interface LinesProps {
   lines?: ILine[];
+  sectionIndex: number;
 }
 
 type LineKey = "description" | "snippet";
 
-const Lines = ({ lines }: LinesProps) => {
+const Lines = ({ lines, sectionIndex }: LinesProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
 
-  const handleAddLine = () => {};
+  const handleAddLine = () => {
+    setCheatsheet(
+      produce((draft) => {
+        draft.sections![sectionIndex].lines?.push({
+          description: "",
+          snippet: "",
+        });
+      })
+    );
+  };
 
   const handleSave = () => {};
 
@@ -25,14 +36,13 @@ const Lines = ({ lines }: LinesProps) => {
     event: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    setCheatsheet((prev: ICheatsheet) => {
-      prev.sections!.reduce((acc: ILine[], cur: ISection) => {
-        return acc.concat(cur.lines!);
-      }, [])[index][event.target.className as LineKey] = event.target.value;
-      return {
-        ...prev,
-      };
-    });
+    setCheatsheet(
+      produce((draft) => {
+        draft.sections![sectionIndex].lines![index][
+          event.target.className as LineKey
+        ] = event.target.value;
+      })
+    );
   };
 
   return (

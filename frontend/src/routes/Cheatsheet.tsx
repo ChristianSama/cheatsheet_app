@@ -6,7 +6,7 @@ import { ICheatsheet } from "../types";
 
 export interface ICheatsheetContext {
   cheatsheet: ICheatsheet;
-  setCheatsheet: any;
+  setCheatsheet: React.Dispatch<React.SetStateAction<ICheatsheet>>;
 }
 
 export const CheatsheetContext = createContext<ICheatsheetContext>({
