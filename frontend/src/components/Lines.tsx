@@ -12,6 +12,8 @@ interface LinesProps {
   lines?: ILine[];
 }
 
+type LineKey = "description" | "snippet"
+
 const Lines = ({ lines }: LinesProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
 
@@ -19,16 +21,16 @@ const Lines = ({ lines }: LinesProps) => {
 
   const handleSave = () => {};
 
-  const handleDescriptionChange = (
+  const handleLineChange = (
     event: ChangeEvent<HTMLInputElement>,
     id: number | undefined
   ) => {
     setCheatsheet((prev: ICheatsheet) => {
-      prev
+      let a = prev
         .sections!.reduce((acc: ILine[], cur: ISection) => {
           return acc.concat(cur.lines!);
         }, [])
-        .find((line) => line.id === id)!.description = event.target.value;
+        .find((line) => line.id === id)![event.target.className as LineKey] = event.target.value
       return {
         ...prev,
       };
@@ -45,14 +47,16 @@ const Lines = ({ lines }: LinesProps) => {
       {lines?.map(({ id, description, snippet }, index) => (
         <StyledLine key={id}>
           <input
+            className="description"
             type="text"
             value={description}
-            onChange={(event) => handleDescriptionChange(event, id)}
+            onChange={(event) => handleLineChange(event, id)}
           ></input>
           <input
+            className="snippet"
             type="text"
             value={snippet}
-            onChange={(event) => handleSnippetChange(event, id)}
+            onChange={(event) => handleLineChange(event, id)}
           ></input>
         </StyledLine>
       ))}
