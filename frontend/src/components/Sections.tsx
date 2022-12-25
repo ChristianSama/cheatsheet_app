@@ -33,9 +33,24 @@ const Sections = ({ sections }: SectionsProps) => {
   ) => {
     setCheatsheet(
       produce((draft) => {
-        draft.sections![index][event.target.className as SectionKeys] = event.target.value;
+        draft.sections![index][event.target.className as SectionKeys] =
+          event.target.value;
       })
-    )
+    );
+  };
+
+  const newSection = {
+    description: "",
+    title: "",
+    lines: [],
+  };
+
+  const handleAddSection = () => {
+    setCheatsheet(
+      produce((draft) => {
+        draft.sections?.push(newSection);
+      })
+    );
   };
 
   return (
@@ -58,7 +73,8 @@ const Sections = ({ sections }: SectionsProps) => {
               handleSectionChange(event, index);
             }}
           />
-          <Lines lines={lines} sectionIndex={index}/>
+          <Lines lines={lines} sectionIndex={index} />
+          <button onClick={handleAddSection}>Add Section</button>
         </StyledSection>
       ))}
     </StyledSections>

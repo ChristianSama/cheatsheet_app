@@ -19,13 +19,15 @@ type LineKey = "description" | "snippet";
 const Lines = ({ lines, sectionIndex }: LinesProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
 
+  const newLine = {
+    description: "",
+    snippet: "",
+  };
+
   const handleAddLine = () => {
     setCheatsheet(
       produce((draft) => {
-        draft.sections![sectionIndex].lines?.push({
-          description: "",
-          snippet: "",
-        });
+        draft.sections![sectionIndex].lines?.push(newLine);
       })
     );
   };
