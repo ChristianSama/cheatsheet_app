@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { CheatsheetContext } from "../routes/Cheatsheet";
 import { ICheatsheet, ILine, ISection } from "../types";
@@ -47,10 +47,18 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
     );
   };
 
+  const handleRemove = (index: number) => {
+    setCheatsheet(
+      produce((draft) => {
+        draft.sections![sectionIndex].lines?.splice(index, 1)
+      })
+    )
+  }
+
   return (
     <div className="lines">
-      {lines?.map(({ description, snippet }, index) => (
-        <StyledLine key={index}>
+      {lines?.map(({ id, description, snippet }, index) => (
+        <StyledLine key={`${id}_${index}`}>
           <input
             className="description"
             type="text"
@@ -63,6 +71,7 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
             value={snippet}
             onChange={(event) => handleLineChange(event, index)}
           ></input>
+          <button onClick={() => handleRemove(index)}>Remove</button>
         </StyledLine>
       ))}
       <button onClick={handleAddLine}>Add Line</button>

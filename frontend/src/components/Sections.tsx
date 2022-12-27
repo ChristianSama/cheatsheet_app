@@ -55,10 +55,18 @@ const Sections = ({ sections }: SectionsProps) => {
     );
   };
 
+  const handleRemoveSection = (index: number) => {
+    setCheatsheet(
+      produce((draft) => {
+        draft.sections?.splice(index, 1)
+      })
+    )
+  }
+
   return (
     <StyledSections>
-      {sections?.map(({ title, description, lines }, index) => (
-        <StyledSection key={index}>
+      {sections?.map(({ id, title, description, lines }, index) => (
+        <StyledSection key={`${id}_${index}`}>
           <input
             className="title"
             type="text"
@@ -77,6 +85,7 @@ const Sections = ({ sections }: SectionsProps) => {
           />
           <Lines lines={lines} sectionIndex={index} />
           <button onClick={handleAddSection}>Add Section</button>
+          <button onClick={() => handleRemoveSection(index)}>Remove Section</button>
         </StyledSection>
       ))}
     </StyledSections>
