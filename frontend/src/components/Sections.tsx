@@ -15,7 +15,9 @@ const StyledSections = styled.div`
   padding: 1rem;
   height: 600px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
 `;
 
 interface SectionsProps {
