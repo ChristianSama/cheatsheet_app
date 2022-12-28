@@ -8,6 +8,7 @@ import {
 import { Root } from './pages/root';
 import { CheatsheetList } from './pages/CheatsheetList';
 import { Cheatsheet } from './pages/Cheatsheet';
+import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "cheatsheets/:id",
         element: <Cheatsheet />
+      },
+      {
+        path: "/login",
+        element: <Login />
       }
     ]
   },
