@@ -32,8 +32,6 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
     );
   };
 
-  const handleSave = () => {};
-
   const handleLineChange = (
     event: ChangeEvent<HTMLInputElement>,
     index: number
@@ -75,7 +73,6 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
         </StyledLine>
       ))}
       <button onClick={handleAddLine}>Add Line</button>
-      <button onClick={handleSave}>Save</button>
     </div>
   );
 };
