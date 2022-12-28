@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
-import { CheatsheetContext } from "../routes/Cheatsheet";
+import { CheatsheetContext } from "../pages/Cheatsheet";
 import { ICheatsheet, ILine, ISection } from "../types";
 import { produce } from "immer";
 

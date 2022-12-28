@@ -5,9 +5,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Root } from './routes/root';
-import { CheatsheetList } from './routes/CheatsheetList';
-import { Cheatsheet } from './routes/Cheatsheet';
+import { Root } from './pages/root';
+import { CheatsheetList } from './pages/CheatsheetList';
+import { Cheatsheet } from './pages/Cheatsheet';
 
 const router = createBrowserRouter([
   {

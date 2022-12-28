@@ -1,7 +1,7 @@
 import produce from "immer";
 import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
-import { CheatsheetContext } from "../routes/Cheatsheet";
+import { CheatsheetContext } from "../pages/Cheatsheet";
 import { ICheatsheet, ISection } from "../types";
 import Lines from "./Lines";
 
