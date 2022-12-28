@@ -71,12 +71,10 @@ const Sections = ({ sections }: SectionsProps) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cheatsheet),
       };
-      const response = await fetch(
+      await fetch(
         `${process.env.REACT_APP_API_URL}cheatsheets/${cheatsheet.id}/`,
         options
       );
-      const content = await response.json();
-      console.log(content);
     } catch (err) {
       setError(err as Error)
     }

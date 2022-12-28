@@ -21,7 +21,7 @@ export const Cheatsheet = () => {
   const params = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/cheatsheets/${params.id}/`)
+    fetch(`${process.env.REACT_APP_API_URL}cheatsheets/${params.id}/`)
       .then((res) => res.json())
       .then(
         (result) => {
