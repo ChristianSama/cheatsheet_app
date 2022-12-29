@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { ICheatsheet } from "../types";
+import { AuthContext } from "../Utils/AuthProvider";
 
 export const CheatsheetList = () => {
   const [error, setError] = useState<null | Error>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [cheatsheets, setCheatsheets] = useState<ICheatsheet[]>([]);
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     fetch("http://localhost:8000/api/cheatsheets/")
@@ -48,7 +50,9 @@ export const CheatsheetList = () => {
   } else {
     return (
       <div>
-        <button onClick={handleCreateCheatsheet}>Nueva Cheatsheet</button>
+        {auth.user && 
+          <button onClick={handleCreateCheatsheet}>Nueva Cheatsheet</button>
+        }
         <ul>
           {cheatsheets.map((cs) => (
             <li key={cs.id}>

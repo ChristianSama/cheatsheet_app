@@ -13,9 +13,13 @@ function Login() {
     event.preventDefault();
 
     let formData = new FormData(event.currentTarget);
-    let username = formData.get("username") as string;
+    const username = formData.get("username") as string;
+    //TODO: hash password
+    const password = formData.get("password") as string;
 
-    auth.signin(username, () => {
+    const user = {username, password}
+
+    auth.login(user, () => {
       navigate(from, { replace: true });
     });
   }
@@ -25,6 +29,7 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <label>
           Username: <input name="username" type="text" />
+          Password: <input name="password" type="password" />
         </label>{" "}
         <button type="submit">Login</button>
       </form>

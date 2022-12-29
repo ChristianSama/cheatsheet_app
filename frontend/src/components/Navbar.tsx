@@ -28,16 +28,16 @@ const AuthStatus = () => {
   }
 
   return (
-    <p>
-      Welcome {auth.user}!{" "}
+    <div>
+      <p>Welcome {auth.user.username}!</p>
       <button
         onClick={() => {
-          auth.signout(() => navigate("/"));
+          auth.logout(() => navigate("/"));
         }}
       >
-        Sign out
+        Logout
       </button>
-    </p>
+    </div>
   );
 };
 
