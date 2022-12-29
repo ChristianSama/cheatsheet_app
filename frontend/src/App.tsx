@@ -1,10 +1,30 @@
-import React from 'react';
-import { CheatsheetList } from './pages/CheatsheetList';
+import { Route, Routes } from "react-router-dom";
+import { Cheatsheet } from "./pages/Cheatsheet";
+import { CheatsheetList } from "./pages/CheatsheetList";
+import Login from "./pages/Login";
+import { AuthProvider } from "./Utils/AuthProvider";
+import { Layout } from "./pages/Layout";
+import { RequireAuth } from "./Utils/RequireAuth";
 
 function App() {
   return (
     <div className="App">
-      <CheatsheetList></CheatsheetList>
+      <AuthProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<CheatsheetList />} />
+            <Route path="cheatsheets" element={<CheatsheetList />} />
+            <Route path="cheatsheets/:id" element={
+                <RequireAuth>
+                  <Cheatsheet />
+                </RequireAuth>
+              }
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="*" element={<p>Hola, no hay nada aqui</p>}/>
+          </Route>
+        </Routes>
+      </AuthProvider>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-export const Root = () => {
+export const Layout = () => {
   return (
     <div>
       <Navbar />
