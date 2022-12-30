@@ -33,6 +33,9 @@ function Login() {
         </label>{" "}
         <button type="submit">Login</button>
       </form>
+      {auth.errorMessage && 
+        <p>{auth.errorMessage}</p> 
+      }
     </div>
   );
 }

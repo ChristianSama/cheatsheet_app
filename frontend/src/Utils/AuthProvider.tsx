@@ -1,16 +1,21 @@
 import { createContext, useState } from "react";
 import jwtDecode from "jwt-decode";
-import { Token } from "../types";
 
 interface AuthContextType {
+  authTokens: any;
+  setAuthTokens: React.Dispatch<any>;
   user: any;
+  setUser: React.Dispatch<any>; 
   login: (user: any, callback: VoidFunction) => Promise<void>;
   logout: (callback: VoidFunction) => void;
+  errorMessage: string | null;
 }
 
 export const AuthContext = createContext<AuthContextType>(null!);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
   const [authTokens, setAuthTokens] = useState(() => {
     const stored = localStorage.getItem("authTokens");
     return stored ? JSON.parse(stored) : null;
@@ -40,7 +45,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("authTokens", JSON.stringify(tokens));
       callback();
     } else {
-      console.log("algo salio mal al hacer login");
+      const msj = "Algo salio mal al hacer login"
+      setErrorMessage(msj)
     }
   };
 
@@ -51,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     callback();
   };
 
-  const value = { user, login, logout };
+  const value = { authTokens, setAuthTokens, user, setUser, login, logout, errorMessage};
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
