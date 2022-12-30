@@ -17,3 +17,8 @@ export interface ILine {
   description: string;
   snippet: string;
 }
+
+export interface Token {
+  access: string;
+  refresh: string;
+}
