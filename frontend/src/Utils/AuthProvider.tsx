@@ -45,6 +45,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = (callback: VoidFunction) => {
+    localStorage.removeItem("authTokens");
+    setAuthTokens(null);
     setUser(null);
     callback();
   };
