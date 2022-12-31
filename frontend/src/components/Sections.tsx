@@ -1,5 +1,6 @@
 import produce from "immer";
 import React, { ChangeEvent, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CheatsheetContext } from "../pages/Cheatsheet";
 import { ICheatsheet, ISection } from "../types";
@@ -30,7 +31,8 @@ type SectionKeys = "description" | "title";
 const Sections = ({ sections }: SectionsProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
   const [error, setError] = useState<Error>();
-  const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSectionChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -67,19 +69,28 @@ const Sections = ({ sections }: SectionsProps) => {
   };
 
   const handleSave = async () => {
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.authTokens.access}`,
+      },
+      body: JSON.stringify(cheatsheet),
+    };
     try {
-      const options = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json",
-        "Authorization":`Bearer ${auth.authTokens.access}`},
-        body: JSON.stringify(cheatsheet),
-      };
-      await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_API_URL}cheatsheets/${cheatsheet.id}/`,
         options
       );
+      if (response.ok) {
+        console.log("Cambio guardado exitosamente");
+      }
+      if (response.status === 401) {
+        //Unauthorized
+        auth.logout(() => navigate(cheatsheet.id!.toString()));
+      }
     } catch (err) {
-      setError(err as Error)
+      setError(err as Error);
     }
   };
 

@@ -32,7 +32,10 @@ export const CheatsheetList = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.authTokens.access}`,
       },
-      body: JSON.stringify({ title: "Nueva Cheatsheet", user: auth.user.userId }),
+      body: JSON.stringify({
+        title: "Nueva Cheatsheet",
+        user: auth.user.userId,
+      }),
     };
     try {
       const response = await fetch(
@@ -40,7 +43,14 @@ export const CheatsheetList = () => {
         options
       );
       const cs = (await response.json()) as ICheatsheet;
-      navigate(`cheatsheets/${cs.id!}`);
+      if (response.ok) {
+        console.log("Cheatsheet creada exitosamente");
+        navigate(`${cs.id!}`);
+      }
+      if (response.status === 401) {
+        //Unauthorized
+        auth.logout(() => navigate("/"));
+      }
     } catch (err) {
       setError(err as Error);
     }
