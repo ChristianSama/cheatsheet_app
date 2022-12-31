@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./Utils/AuthProvider";
 import { Layout } from "./pages/Layout";
 import { RequireAuth } from "./Utils/RequireAuth";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
                 </RequireAuth>
               }
             />
+            <Route path="register" element={<Register />}/>
             <Route path="login" element={<Login />} />
             <Route path="*" element={<p>Hola, no hay nada aqui</p>}/>
           </Route>

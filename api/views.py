@@ -1,10 +1,16 @@
-from api.serializers import CheatsheetSerializer
+from api.serializers import CheatsheetSerializer, MyTokenObtainPairSerializer, RegisterSerializer
 from .models import Cheatsheet
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .permissions import IsOwnerOrReadOnly
+from django.contrib.auth.models import User
+from rest_framework import generics
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
 
 
 class CheatsheetViewSet(viewsets.ModelViewSet):
@@ -17,15 +23,6 @@ class CheatsheetViewSet(viewsets.ModelViewSet):
         if self.action not in ['list', 'retrieve']:
             permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
         return [permission() for permission in permission_classes]
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['userId'] = user.pk
-        token['username'] = user.username
-        return token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):

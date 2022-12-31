@@ -5,9 +5,10 @@ interface AuthContextType {
   authTokens: any;
   setAuthTokens: React.Dispatch<any>;
   user: any;
-  setUser: React.Dispatch<any>; 
+  setUser: React.Dispatch<any>;
   login: (user: any, callback: VoidFunction) => Promise<void>;
   logout: (callback: VoidFunction) => void;
+  register: (username: string, password: string, password2: string, callback: VoidFunction) => void;
   errorMessage: string | null;
 }
 
@@ -45,8 +46,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("authTokens", JSON.stringify(tokens));
       callback();
     } else {
-      const msj = "Algo salio mal al hacer login"
-      setErrorMessage(msj)
+      const msj = "Algo salio mal al hacer login";
+      setErrorMessage(msj);
     }
   };
 
@@ -57,7 +58,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     callback();
   };
 
-  const value = { authTokens, setAuthTokens, user, setUser, login, logout, errorMessage};
+  const register = async (
+    username: string,
+    password: string,
+    password2: string,
+    callback: VoidFunction
+  ) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}register/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        password2,
+      }),
+    });
+    if (response.status === 201) {
+      callback();
+    } else {
+      const data = await response.json()
+      console.log(data)
+      alert(data.username[0] | data.password[0])
+    }
+  };
+
+  const value = {
+    authTokens,
+    setAuthTokens,
+    user,
+    setUser,
+    login,
+    logout,
+    register,
+    errorMessage,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

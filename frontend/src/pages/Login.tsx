@@ -14,7 +14,6 @@ function Login() {
 
     let formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
-    //TODO: hash password
     const password = formData.get("password") as string;
 
     const user = {username, password}
