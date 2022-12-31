@@ -93,8 +93,15 @@ export const Cheatsheet = () => {
             />
             <input
               className="description"
+              placeholder="description"
               type="text"
               value={cheatsheet.description}
+              onChange={(event) => handleChange(event)}
+            />
+            <input
+              type="text"
+              placeholder="tags"
+              value={cheatsheet.tags}
               onChange={(event) => handleChange(event)}
             />
           </>
@@ -102,6 +109,7 @@ export const Cheatsheet = () => {
           <>
             <p>{cheatsheet.title}</p>
             <p>{cheatsheet.description}</p>
+            <p>{cheatsheet.tags}</p>
           </>
         )}
         <CheatsheetContext.Provider value={{ cheatsheet, setCheatsheet }}>
