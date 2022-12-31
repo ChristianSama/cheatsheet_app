@@ -1,23 +1,18 @@
+import produce from "immer";
 import { ChangeEvent, useContext, useState } from "react";
-import styled from "styled-components";
 import { CheatsheetContext } from "../pages/Cheatsheet";
 import { ICheatsheet, ILine, ISection } from "../types";
-import { produce } from "immer";
-
-const StyledLine = styled.div`
-  background-color: pink;
-  display: flex;
-`;
+import { AuthContext } from "../Utils/AuthProvider";
+import Line from "./Line";
 
 interface LinesProps {
   lines?: ILine[];
   sectionIndex: number;
 }
 
-type LineKey = "description" | "snippet";
-
 const Lines = ({ lines, sectionIndex }: LinesProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
+  const auth = useContext(AuthContext);
 
   const newLine = {
     description: "",
@@ -32,47 +27,14 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
     );
   };
 
-  const handleLineChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    setCheatsheet(
-      produce((draft) => {
-        draft.sections![sectionIndex].lines![index][
-          event.target.className as LineKey
-        ] = event.target.value;
-      })
-    );
-  };
-
-  const handleRemove = (index: number) => {
-    setCheatsheet(
-      produce((draft) => {
-        draft.sections![sectionIndex].lines?.splice(index, 1)
-      })
-    )
-  }
-
   return (
     <div className="lines">
-      {lines?.map(({ id, description, snippet }, index) => (
-        <StyledLine key={`${id}_${index}`}>
-          <input
-            className="description"
-            type="text"
-            value={description}
-            onChange={(event) => handleLineChange(event, index)}
-          ></input>
-          <input
-            className="snippet"
-            type="text"
-            value={snippet}
-            onChange={(event) => handleLineChange(event, index)}
-          ></input>
-          <button onClick={() => handleRemove(index)}>Remove</button>
-        </StyledLine>
+      {lines?.map((line, index) => (
+        <Line line={line} sectionIndex={sectionIndex} index={index} />
       ))}
-      <button onClick={handleAddLine}>Add Line</button>
+      {auth.user.userId === cheatsheet.user && (
+        <button onClick={handleAddLine}>Add Line</button>
+      )}
     </div>
   );
 };

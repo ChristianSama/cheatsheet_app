@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from "react";
+import produce from "immer";
+import React, { ChangeEvent, createContext, useContext } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sections from "../components/Sections";
@@ -14,6 +15,8 @@ export const CheatsheetContext = createContext<ICheatsheetContext>({
   cheatsheet: {},
   setCheatsheet: () => {},
 });
+
+type CheatsheetKey = "description" | "title";
 
 export const Cheatsheet = () => {
   const [error, setError] = useState<null | Error>(null);
@@ -64,6 +67,14 @@ export const Cheatsheet = () => {
     }
   };
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCheatsheet(
+      produce((draft) => {
+        draft[event.target.className as CheatsheetKey] = event.target.value;
+      })
+    );
+  };
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -71,9 +82,28 @@ export const Cheatsheet = () => {
   } else {
     return (
       <div className="cheatsheet">
-        <button onClick={handleSave}>Save</button>
-        <p>{cheatsheet.title}</p>
-        <p>{cheatsheet.description}</p>
+        {auth.user.userId === cheatsheet.user ? (
+          <>
+            <button onClick={handleSave}>Save</button>
+            <input
+              className="title"
+              type="text"
+              value={cheatsheet.title}
+              onChange={(event) => handleChange(event)}
+            />
+            <input
+              className="description"
+              type="text"
+              value={cheatsheet.description}
+              onChange={(event) => handleChange(event)}
+            />
+          </>
+        ) : (
+          <>
+            <p>{cheatsheet.title}</p>
+            <p>{cheatsheet.description}</p>
+          </>
+        )}
         <CheatsheetContext.Provider value={{ cheatsheet, setCheatsheet }}>
           <Sections sections={cheatsheet.sections} />
         </CheatsheetContext.Provider>

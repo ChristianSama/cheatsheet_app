@@ -3,6 +3,7 @@ export interface ICheatsheet {
   title?: string;
   description?: string;
   sections?: ISection[];
+  user?: any;
 }
 
 export interface ISection {
