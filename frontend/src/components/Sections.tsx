@@ -3,6 +3,7 @@ import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { CheatsheetContext } from "../pages/Cheatsheet";
 import { ICheatsheet, ISection } from "../types";
+import { AuthContext } from "../Utils/AuthProvider";
 import Lines from "./Lines";
 
 const StyledSection = styled.div`
@@ -29,6 +30,7 @@ type SectionKeys = "description" | "title";
 const Sections = ({ sections }: SectionsProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
   const [error, setError] = useState<Error>();
+  const auth = useContext(AuthContext)
 
   const handleSectionChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -68,7 +70,8 @@ const Sections = ({ sections }: SectionsProps) => {
     try {
       const options = {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+        "Authorization":`Bearer ${auth.authTokens.access}`},
         body: JSON.stringify(cheatsheet),
       };
       await fetch(

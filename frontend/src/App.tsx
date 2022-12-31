@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Cheatsheet } from "./pages/Cheatsheet";
 import { CheatsheetList } from "./pages/CheatsheetList";
 import Login from "./pages/Login";
@@ -12,7 +12,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route element={<Layout />}>
-            <Route index element={<CheatsheetList />} />
+            <Route path="" element={<Navigate to="cheatsheets"/>} />
             <Route path="cheatsheets" element={<CheatsheetList />} />
             <Route path="cheatsheets/:id" element={
                 <RequireAuth>

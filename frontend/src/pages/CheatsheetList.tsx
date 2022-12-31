@@ -28,18 +28,21 @@ export const CheatsheetList = () => {
   const handleCreateCheatsheet = async () => {
     const options = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({title: ""}),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.authTokens.access}`,
+      },
+      body: JSON.stringify({ title: "Nueva Cheatsheet", user: auth.user.userId }),
     };
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}cheatsheets/`,
-        options,
+        options
       );
-      const cs = await response.json() as ICheatsheet;
+      const cs = (await response.json()) as ICheatsheet;
       navigate(`cheatsheets/${cs.id!}`);
-    } catch(err) {
-      setError(err as Error)
+    } catch (err) {
+      setError(err as Error);
     }
   };
 
@@ -50,13 +53,13 @@ export const CheatsheetList = () => {
   } else {
     return (
       <div>
-        {auth.user && 
+        {auth.user && (
           <button onClick={handleCreateCheatsheet}>Nueva Cheatsheet</button>
-        }
+        )}
         <ul>
           {cheatsheets.map((cs) => (
             <li key={cs.id}>
-              <Link to={`cheatsheets/${cs.id}`}>
+              <Link to={`${cs.id}`}>
                 <p>{cs.title}</p>
                 <p>{cs.description}</p>
               </Link>
