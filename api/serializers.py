@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from taggit.serializers import (TagListSerializerField,
+                                TaggitSerializer)
+
 
 from api.models import Cheatsheet, Line, Section
 
@@ -21,8 +24,9 @@ class SectionSerializer(WritableNestedModelSerializer):
         fields = "__all__"
 
 
-class CheatsheetSerializer(WritableNestedModelSerializer):
+class CheatsheetSerializer(TaggitSerializer, WritableNestedModelSerializer):
     sections = SectionSerializer(many=True, required=False)
+    tags = TagListSerializerField()
 
     class Meta:
         model = Cheatsheet
