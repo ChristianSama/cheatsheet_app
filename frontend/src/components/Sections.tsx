@@ -31,8 +31,6 @@ type SectionKeys = "description" | "title";
 const Sections = ({ sections }: SectionsProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
   const [error, setError] = useState<Error>();
-  const auth = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleSectionChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -68,36 +66,9 @@ const Sections = ({ sections }: SectionsProps) => {
     );
   };
 
-  const handleSave = async () => {
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authTokens.access}`,
-      },
-      body: JSON.stringify(cheatsheet),
-    };
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}cheatsheets/${cheatsheet.id}/`,
-        options
-      );
-      if (response.ok) {
-        console.log("Cambio guardado exitosamente");
-      }
-      if (response.status === 401) {
-        //Unauthorized
-        auth.logout(() => navigate(cheatsheet.id!.toString()));
-      }
-    } catch (err) {
-      setError(err as Error);
-    }
-  };
-
   return (
     <>
       <button onClick={handleAddSection}>Add Section</button>
-      <button onClick={handleSave}>Save</button>
       <StyledSections>
         {sections?.map(({ id, title, description, lines }, index) => (
           <StyledSection key={`${id}_${index}`}>

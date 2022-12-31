@@ -1,8 +1,9 @@
-import React, { createContext } from "react";
+import React, { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Sections from "../components/Sections";
 import { ICheatsheet } from "../types";
+import { AuthContext } from "../Utils/AuthProvider";
 
 export interface ICheatsheetContext {
   cheatsheet: ICheatsheet;
@@ -19,6 +20,8 @@ export const Cheatsheet = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [cheatsheet, setCheatsheet] = useState<ICheatsheet>({});
   const params = useParams();
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}cheatsheets/${params.id}/`)
@@ -35,6 +38,32 @@ export const Cheatsheet = () => {
       );
   }, []);
 
+  const handleSave = async () => {
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.authTokens.access}`,
+      },
+      body: JSON.stringify(cheatsheet),
+    };
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}cheatsheets/${cheatsheet.id}/`,
+        options
+      );
+      if (response.ok) {
+        console.log("Cambio guardado exitosamente");
+      }
+      if (response.status === 401) {
+        //Unauthorized
+        auth.logout(() => navigate(cheatsheet.id!.toString()));
+      }
+    } catch (err) {
+      setError(err as Error);
+    }
+  };
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -42,6 +71,7 @@ export const Cheatsheet = () => {
   } else {
     return (
       <div className="cheatsheet">
+        <button onClick={handleSave}>Save</button>
         <p>{cheatsheet.title}</p>
         <p>{cheatsheet.description}</p>
         <CheatsheetContext.Provider value={{ cheatsheet, setCheatsheet }}>
