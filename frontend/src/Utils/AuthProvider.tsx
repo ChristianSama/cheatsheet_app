@@ -8,7 +8,12 @@ interface AuthContextType {
   setUser: React.Dispatch<any>;
   login: (user: any, callback: VoidFunction) => Promise<void>;
   logout: (callback: VoidFunction) => void;
-  register: (username: string, password: string, password2: string, callback: VoidFunction) => void;
+  register: (
+    username: string,
+    password: string,
+    password2: string,
+    callback: VoidFunction
+  ) => void;
   errorMessage: string | null;
 }
 
@@ -78,9 +83,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (response.status === 201) {
       callback();
     } else {
-      const data = await response.json()
-      console.log(data)
-      alert(data.username[0] | data.password[0])
+      const data = await response.json();
+      if (data.username) {
+        alert(data.username[0]);
+      } else if (data.password) {
+        alert(data.password[0]);
+      } else if (data.password2) {
+        alert(data.password2[0]);
+      }
     }
   };
 

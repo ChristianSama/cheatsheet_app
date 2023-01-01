@@ -47,7 +47,7 @@ const Section = ({ title, description, lines, index }: SectionProps) => {
 
   return (
     <StyledSection>
-      {auth.user.userId === cheatsheet.user ? (
+      {auth.user.user_id === cheatsheet.user ? (
         <>
           <button onClick={() => handleRemoveSection(index)}>
             Remove Section

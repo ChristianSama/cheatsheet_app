@@ -40,7 +40,7 @@ const Sections = ({ sections }: SectionsProps) => {
 
   return (
     <>
-      {auth.user.userId === cheatsheet.user && (
+      {auth.user.user_id === cheatsheet.user && (
         <button onClick={handleAddSection}>Add Section</button>
       )}
       <StyledSections>

@@ -7,6 +7,7 @@ from .permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
 from rest_framework import generics
 from vote.views import VoteMixin
+from rest_framework.response import Response
 
 
 class RegisterView(generics.CreateAPIView):
@@ -19,11 +20,20 @@ class CheatsheetViewSet(viewsets.ModelViewSet, VoteMixin):
     serializer_class = CheatsheetSerializer
     http_method_names = ['get', 'post', 'retrieve', 'put', 'patch', 'delete']
 
-    # def get_permissions(self):
-    #     permission_classes = []
-    #     if self.action not in ['list', 'retrieve']:
-    #         permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    #     return [permission() for permission in permission_classes]
+    # def list(self, request):
+    #     if request.user.is_authenticated:
+    #         print(Cheatsheet.votes.all(request.user.id))
+    #         queryset = Cheatsheet.objects.all()
+    #         serializer = CheatsheetSerializer(queryset, many=True)
+    #         return Response(serializer.data)
+    #     return super().list(request)
+
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action not in ['list', 'retrieve']:
+            permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+        return [permission() for permission in permission_classes]
 
 
 class MyTokenObtainPairView(TokenObtainPairView):

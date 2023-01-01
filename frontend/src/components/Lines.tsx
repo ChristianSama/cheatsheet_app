@@ -37,7 +37,7 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
           key={`${line.id}_${index}`}
         />
       ))}
-      {auth.user.userId === cheatsheet.user && (
+      {auth.user.user_id === cheatsheet.user && (
         <button onClick={handleAddLine}>Add Line</button>
       )}
     </div>

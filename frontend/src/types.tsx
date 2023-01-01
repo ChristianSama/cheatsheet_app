@@ -5,6 +5,7 @@ export interface ICheatsheet {
   sections?: ISection[];
   user?: any;
   tags?: string[];
+  vote_score?: number;
 }
 
 export interface ISection {

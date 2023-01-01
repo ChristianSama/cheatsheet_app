@@ -79,6 +79,30 @@ export const Cheatsheet = () => {
     );
   };
 
+  const handleUpvote = async () => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.authTokens.access}`,
+      },
+    };
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}cheatsheets/${cheatsheet.id}/vote/`,
+        options
+      );
+      if (response.ok) {
+        alert("operacion exitosa");
+      }
+      if (response.status === 409) {
+        alert("no puedes votar mas de una vez")
+      }
+    } catch (err) {
+      alert("algo salio mal");
+    }
+  };
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -86,7 +110,9 @@ export const Cheatsheet = () => {
   } else {
     return (
       <div className="cheatsheet">
-        {auth.user.userId === cheatsheet.user ? (
+        <p>{cheatsheet.vote_score}</p>
+        <button onClick={handleUpvote}>Upvote</button>
+        {auth.user.user_id === cheatsheet.user ? (
           <>
             <button onClick={handleSave}>Save</button>
             <input
