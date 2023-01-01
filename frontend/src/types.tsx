@@ -4,7 +4,7 @@ export interface ICheatsheet {
   description?: string;
   sections?: ISection[];
   user?: any;
-  tags?: string;
+  tags?: string[];
 }
 
 export interface ISection {

@@ -70,7 +70,11 @@ export const Cheatsheet = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheatsheet(
       produce((draft) => {
-        draft[event.target.className as CheatsheetKey] = event.target.value;
+        if (event.target.className === "tags") {
+          draft.tags = event.target.value.replace(/ /g, "").split(",");
+        } else {
+          draft[event.target.className as CheatsheetKey] = event.target.value;
+        }
       })
     );
   };
@@ -99,9 +103,10 @@ export const Cheatsheet = () => {
               onChange={(event) => handleChange(event)}
             />
             <input
+              className="tags"
               type="text"
               placeholder="tags"
-              value={cheatsheet.tags}
+              value={cheatsheet.tags!.join()}
               onChange={(event) => handleChange(event)}
             />
           </>
@@ -109,7 +114,7 @@ export const Cheatsheet = () => {
           <>
             <p>{cheatsheet.title}</p>
             <p>{cheatsheet.description}</p>
-            <p>{cheatsheet.tags}</p>
+            <p>{cheatsheet.tags!.join()}</p>
           </>
         )}
         <CheatsheetContext.Provider value={{ cheatsheet, setCheatsheet }}>

@@ -30,7 +30,12 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
   return (
     <div className="lines">
       {lines?.map((line, index) => (
-        <Line line={line} sectionIndex={sectionIndex} index={index} />
+        <Line
+          line={line}
+          sectionIndex={sectionIndex}
+          index={index}
+          key={`${line.id}_${index}`}
+        />
       ))}
       {auth.user.userId === cheatsheet.user && (
         <button onClick={handleAddLine}>Add Line</button>

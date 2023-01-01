@@ -45,7 +45,7 @@ const Line = ({ line, index, sectionIndex }: LineProps) => {
 
   return (
     <div>
-      <StyledLine key={`${line.id}_${index}`}>
+      <StyledLine>
         {auth.user.userId === cheatsheet.user ? (
           <>
             <input

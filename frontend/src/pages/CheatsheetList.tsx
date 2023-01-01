@@ -34,7 +34,9 @@ export const CheatsheetList = () => {
       },
       body: JSON.stringify({
         title: "Nueva Cheatsheet",
+        description: "",
         user: auth.user.userId,
+        tags: [],
       }),
     };
     try {
