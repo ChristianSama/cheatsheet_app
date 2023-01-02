@@ -20,14 +20,23 @@ class CheatsheetViewSet(viewsets.ModelViewSet, VoteMixin):
     serializer_class = CheatsheetSerializer
     http_method_names = ['get', 'post', 'retrieve', 'put', 'patch', 'delete']
 
-    # def list(self, request):
-    #     if request.user.is_authenticated:
-    #         print(Cheatsheet.votes.all(request.user.id))
-    #         queryset = Cheatsheet.objects.all()
-    #         serializer = CheatsheetSerializer(queryset, many=True)
-    #         return Response(serializer.data)
-    #     return super().list(request)
-
+    def list(self, request):
+        if request.user.is_authenticated:
+            user_tag_rank = {}
+            cheatsheet_ids = [cs["id"] for cs in Cheatsheet.votes.all(request.user.id).values()]
+            for id in cheatsheet_ids:
+                tags = Cheatsheet.objects.get(id=id).tags.values()
+                for tag in tags:
+                    if tag['name'] in user_tag_rank:
+                        user_tag_rank[tag['name']] += 1 
+                    else:
+                        user_tag_rank[tag['name']] = 1
+            
+            
+            queryset = Cheatsheet.objects.all()
+            serializer = CheatsheetSerializer(queryset, many=True)
+            return Response(serializer.data)
+        return super().list(request)
 
     def get_permissions(self):
         permission_classes = []
