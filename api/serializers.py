@@ -9,6 +9,12 @@ from taggit.serializers import (TagListSerializerField,
 
 from api.models import Cheatsheet, Line, Section
 
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = User
+        fields = ['id', 'username']
+
 
 class LineSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,10 +33,11 @@ class SectionSerializer(WritableNestedModelSerializer):
 class CheatsheetSerializer(TaggitSerializer, WritableNestedModelSerializer):
     sections = SectionSerializer(many=True, required=False)
     tags = TagListSerializerField()
+    user = UserSerializer()
 
     class Meta:
         model = Cheatsheet
-        fields = "__all__"
+        fields = ("id", "sections", "tags", "vote_score", "title", "description", "user")
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

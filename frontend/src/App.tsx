@@ -6,10 +6,12 @@ import { AuthProvider } from "./Utils/AuthProvider";
 import { Layout } from "./pages/Layout";
 import { RequireAuth } from "./Utils/RequireAuth";
 import Register from "./pages/Register";
+import { GlobalStyle } from "./StyledComponents/GlobalStyles";
 
 function App() {
   return (
     <div className="App">
+      <GlobalStyle />
       <AuthProvider>
         <Routes>
           <Route element={<Layout />}>

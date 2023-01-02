@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
+import StyledCheatsheetList from "../StyledComponents/StyledCheatsheetList";
+import StyledCheatsheetListItem from "../StyledComponents/StyledCheatsheetListItem";
 import { ICheatsheet } from "../types";
 import { AuthContext } from "../Utils/AuthProvider";
 
@@ -12,7 +14,7 @@ export const CheatsheetList = () => {
 
   type Headers = {
     [key: string]: string;
-  } 
+  };
 
   useEffect(() => {
     const options = {
@@ -49,18 +51,15 @@ export const CheatsheetList = () => {
     return <div>Loading...</div>;
   } else {
     return (
-      <div>
-        <ul>
-          {cheatsheets.map((cs) => (
-            <li key={cs.id}>
-              <Link to={`${cs.id}`}>
-                <p>{cs.title}</p>
-                <p>{cs.description}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <StyledCheatsheetList>
+        {cheatsheets.map((cs) => (
+          <StyledCheatsheetListItem key={cs.id} to={`${cs.id}`}>
+            <p className="title">{cs.title}</p>
+            <p className="description">{cs.description}</p>
+            <p className="author">by {cs.user.username}</p>
+          </StyledCheatsheetListItem>
+        ))}
+      </StyledCheatsheetList>
     );
   }
 };
