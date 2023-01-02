@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
+import StyledButton from "../StyledComponents/StyledButton";
 import { ICheatsheet } from "../types";
 import { AuthContext } from "../Utils/AuthProvider";
 
@@ -25,38 +26,6 @@ export const CheatsheetList = () => {
       );
   }, []);
 
-  const handleCreateCheatsheet = async () => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authTokens.access}`,
-      },
-      body: JSON.stringify({
-        title: "Nueva Cheatsheet",
-        description: "",
-        user: auth.user.user_id,
-        tags: [],
-      }),
-    };
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}cheatsheets/`,
-        options
-      );
-      const cs = (await response.json()) as ICheatsheet;
-      if (response.ok) {
-        console.log("Cheatsheet creada exitosamente");
-        navigate(`${cs.id!}`);
-      }
-      if (response.status === 401) {
-        //Unauthorized
-        auth.logout(() => navigate("/"));
-      }
-    } catch (err) {
-      setError(err as Error);
-    }
-  };
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -65,9 +34,6 @@ export const CheatsheetList = () => {
   } else {
     return (
       <div>
-        {auth.user && (
-          <button onClick={handleCreateCheatsheet}>Nueva Cheatsheet</button>
-        )}
         <ul>
           {cheatsheets.map((cs) => (
             <li key={cs.id}>
