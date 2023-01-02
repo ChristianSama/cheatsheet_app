@@ -4,8 +4,10 @@ import styled from "styled-components";
 import { AuthContext } from "../Utils/AuthProvider";
 import StyledButton from "../StyledComponents/StyledButton";
 import { ICheatsheet } from "../types";
+import StyledNavButton from "../StyledComponents/StyledNavButton";
 
 const StyledNavbar = styled.nav`
+  background-color: white;
   li {
     list-style: none;
   }
@@ -75,23 +77,23 @@ const AuthStatus = () => {
   if (!auth.user) {
     return (
       <StyledAuthStatus>
-        <StyledButton onClick={() => navigate("/login")}>Login</StyledButton>
-        <StyledButton onClick={() => navigate("/register")}>Register</StyledButton>
+        <StyledNavButton onClick={() => navigate("/login")}>Login</StyledNavButton>
+        <StyledNavButton onClick={() => navigate("/register")}>Register</StyledNavButton>
       </StyledAuthStatus>
     );
   }
 
   return (
     <StyledAuthStatus>
-      <StyledButton onClick={handleCreateCheatsheet}>Nueva Cheatsheet</StyledButton>
+      <StyledNavButton onClick={handleCreateCheatsheet}>Crear Nueva Cheatsheet</StyledNavButton>
       <p>Welcome {auth.user.username}!</p>
-      <StyledButton
+      <StyledNavButton
         onClick={() => {
           auth.logout(() => navigate("/"));
         }}
       >
         Logout
-      </StyledButton>
+      </StyledNavButton>
     </StyledAuthStatus>
   );
 };
