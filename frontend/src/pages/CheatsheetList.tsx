@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
-import StyledButton from "../StyledComponents/StyledButton";
 import { ICheatsheet } from "../types";
 import { AuthContext } from "../Utils/AuthProvider";
 
@@ -11,29 +10,38 @@ export const CheatsheetList = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
+  type Headers = {
+    [key: string]: string;
+  } 
+
   useEffect(() => {
     const options = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.authTokens.access}`,
-      },
+      } as Headers,
     };
-    fetch("http://localhost:8000/api/cheatsheets/", options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          setIsLoaded(true);
-          setCheatsheets(result);
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, []);
 
+    if (auth.authTokens) {
+      options.headers.Authorization = `Bearer ${auth.authTokens.access}`;
+    }
+
+    const fetchData = async () => {
+      const response = await fetch(
+        "http://localhost:8000/api/cheatsheets/",
+        options
+      );
+      if (response.status === 401) {
+        //Unauthorized
+        auth.logout(() => navigate("/login"));
+      }
+      const result = await response.json();
+      setIsLoaded(true);
+      setCheatsheets(result);
+    };
+
+    fetchData().catch((err) => setError(err));
+  }, []);
 
   if (error) {
     return <div>Error: {error.message}</div>;
