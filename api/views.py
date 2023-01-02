@@ -20,7 +20,7 @@ class CheatsheetViewSet(viewsets.ModelViewSet, VoteMixin):
     serializer_class = CheatsheetSerializer
     http_method_names = ['get', 'post', 'retrieve', 'put', 'patch', 'delete']
 
-    def sort_cheatsheets(cheatsheet, ranks):
+    def sort_cheatsheets(self, cheatsheet, ranks):
         # cheatsheet_ranked_tags = []
         # for tag in cheatsheet.tags:
         #     cheatsheet_ranked_tags.append(
@@ -30,10 +30,10 @@ class CheatsheetViewSet(viewsets.ModelViewSet, VoteMixin):
         #         }
         #     )
         cheatsheet_ranks = []
-        for tag in cheatsheet.tags:
-            cheatsheet_ranks.append(ranks.get(tag, 0))
+        for tag in cheatsheet.tags.values():
+            cheatsheet_ranks.append(ranks.get(tag['name'], 0))
         
-        return max(cheatsheet_ranks)
+        return max(cheatsheet_ranks) if bool(cheatsheet_ranks) else 0
 
 
     def list(self, request):
@@ -51,7 +51,7 @@ class CheatsheetViewSet(viewsets.ModelViewSet, VoteMixin):
             # user_tag_rank_list.sort(key=lambda rank: rank['rank'], reverse=True)
 
             queryset = Cheatsheet.objects.all()
-            ordered = sorted(queryset, key=lambda cheatsheet :self.sort_cheatsheets(cheatsheet, user_tag_rank))
+            ordered = sorted(queryset, key=lambda cheatsheet :self.sort_cheatsheets(cheatsheet, user_tag_rank), reverse=True)
 
             serializer = CheatsheetSerializer(ordered, many=True)
             return Response(serializer.data)

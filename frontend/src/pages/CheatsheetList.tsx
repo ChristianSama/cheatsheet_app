@@ -12,10 +12,18 @@ export const CheatsheetList = () => {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/cheatsheets/")
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.authTokens.access}`,
+      },
+    };
+    fetch("http://localhost:8000/api/cheatsheets/", options)
       .then((res) => res.json())
       .then(
         (result) => {
+          console.log(result);
           setIsLoaded(true);
           setCheatsheets(result);
         },
