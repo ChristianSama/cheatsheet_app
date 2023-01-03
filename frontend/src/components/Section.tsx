@@ -25,6 +25,13 @@ const StyledSection = styled.div`
     display: block;
     width: 100%;
   }
+
+  & > .title {
+    font-weight: bold;
+  }
+  p {
+    margin: 0.5rem 0rem;
+  }
 `;
 
 const Section = ({ title, description, lines, index }: SectionProps) => {
@@ -79,7 +86,7 @@ const Section = ({ title, description, lines, index }: SectionProps) => {
         </>
       ) : (
         <>
-          <p>{title}</p>
+          <p className="title">{title}</p>
           <p>{description}</p>
         </>
       )}

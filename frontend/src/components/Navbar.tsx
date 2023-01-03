@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../Utils/AuthProvider";
-import StyledButton from "../StyledComponents/StyledButton";
 import { ICheatsheet } from "../types";
 import StyledNavButton from "../StyledComponents/StyledNavButton";
 
@@ -42,6 +41,7 @@ const AuthStatus = () => {
   let navigate = useNavigate();
 
   const handleCreateCheatsheet = async () => {
+    console.log(auth.user)
     const options = {
       method: "POST",
       headers: {
@@ -52,7 +52,6 @@ const AuthStatus = () => {
         title: "Nueva Cheatsheet",
         description: "",
         user: auth.user.user_id,
-        tags: [],
       }),
     };
     try {

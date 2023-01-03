@@ -8,8 +8,10 @@ import { AuthContext } from "../Utils/AuthProvider";
 type LineKey = "description" | "snippet";
 
 const StyledLine = styled.div`
-  background-color: pink;
   display: flex;
+  p {
+    width: 100%;
+  }
 `;
 
 interface LineProps {
@@ -43,33 +45,31 @@ const Line = ({ line, index, sectionIndex }: LineProps) => {
     );
   };
 
-  return (
-    <div>
+  if (auth.user.user_id === cheatsheet.user.id) {
+    return (
       <StyledLine>
-        {auth.user.user_id === cheatsheet.user.id ? (
-          <>
-            <input
-              className="description"
-              type="text"
-              value={line.description}
-              onChange={(event) => handleLineChange(event, index)}
-            ></input>
-            <input
-              className="snippet"
-              type="text"
-              value={line.snippet}
-              onChange={(event) => handleLineChange(event, index)}
-            ></input>
-            <button onClick={() => handleRemove(index)}>X</button>
-          </>
-        ) : (
-          <>
-            <p>{line.description}</p>
-            <p>{line.snippet}</p>
-          </>
-        )}
+        <input
+          className="description"
+          type="text"
+          value={line.description}
+          onChange={(event) => handleLineChange(event, index)}
+        ></input>
+        <input
+          className="snippet"
+          type="text"
+          value={line.snippet}
+          onChange={(event) => handleLineChange(event, index)}
+        ></input>
+        <button onClick={() => handleRemove(index)}>X</button>
       </StyledLine>
-    </div>
+    );
+  }
+
+  return (
+    <StyledLine>
+      <p>{line.description}</p>
+      <p>{line.snippet}</p>
+    </StyledLine>
   );
 };
 

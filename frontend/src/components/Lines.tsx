@@ -1,5 +1,6 @@
 import produce from "immer";
 import { ChangeEvent, useContext, useState } from "react";
+import styled from "styled-components";
 import { CheatsheetContext } from "../pages/Cheatsheet";
 import { ICheatsheet, ILine, ISection } from "../types";
 import { AuthContext } from "../Utils/AuthProvider";
@@ -9,6 +10,11 @@ interface LinesProps {
   lines?: ILine[];
   sectionIndex: number;
 }
+
+const StyledLines = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 const Lines = ({ lines, sectionIndex }: LinesProps) => {
   const { cheatsheet, setCheatsheet } = useContext(CheatsheetContext);
@@ -28,7 +34,7 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
   };
 
   return (
-    <div className="lines">
+    <StyledLines>
       {lines?.map((line, index) => (
         <Line
           line={line}
@@ -40,7 +46,7 @@ const Lines = ({ lines, sectionIndex }: LinesProps) => {
       {auth.user.user_id === cheatsheet.user.id && (
         <button onClick={handleAddLine}>Add Line</button>
       )}
-    </div>
+    </StyledLines>
   );
 };
 

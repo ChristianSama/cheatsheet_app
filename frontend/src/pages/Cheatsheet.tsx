@@ -44,13 +44,16 @@ export const Cheatsheet = () => {
   }, []);
 
   const handleSave = async () => {
+    const outputCheatsheet = {...cheatsheet}
+    outputCheatsheet.user = auth.user.id
+
     const options = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.authTokens.access}`,
       },
-      body: JSON.stringify(cheatsheet),
+      body: JSON.stringify(outputCheatsheet),
     };
     try {
       const response = await fetch(
