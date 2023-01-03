@@ -7,7 +7,6 @@ import { AuthContext } from "../Utils/AuthProvider";
 import Section from "./Section";
 
 const StyledSections = styled.div`
-  background-color: lightblue;
   padding: 1rem;
   height: 600px;
   display: flex;
@@ -40,7 +39,7 @@ const Sections = ({ sections }: SectionsProps) => {
 
   return (
     <>
-      {auth.user.user_id === cheatsheet.user && (
+      {auth.user.user_id === cheatsheet.user.id && (
         <button onClick={handleAddSection}>Add Section</button>
       )}
       <StyledSections>

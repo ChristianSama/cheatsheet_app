@@ -3,6 +3,8 @@ import React, { ChangeEvent, createContext, useContext } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sections from "../components/Sections";
+import Tags from "../components/Tags";
+import StyledCheatsheet from "../StyledComponents/StyledCheatsheet";
 import { ICheatsheet } from "../types";
 import { AuthContext } from "../Utils/AuthProvider";
 
@@ -70,11 +72,7 @@ export const Cheatsheet = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheatsheet(
       produce((draft) => {
-        if (event.target.className === "tags") {
-          draft.tags = event.target.value.replace(/ /g, "").split(",");
-        } else {
-          draft[event.target.className as CheatsheetKey] = event.target.value;
-        }
+        draft[event.target.className as CheatsheetKey] = event.target.value;
       })
     );
   };
@@ -96,7 +94,7 @@ export const Cheatsheet = () => {
         alert("operacion exitosa");
       }
       if (response.status === 409) {
-        alert("no puedes votar mas de una vez")
+        alert("no puedes votar mas de una vez");
       }
     } catch (err) {
       alert("algo salio mal");
@@ -109,44 +107,43 @@ export const Cheatsheet = () => {
     return <div>Loading...</div>;
   } else {
     return (
-      <div className="cheatsheet">
-        <p>{cheatsheet.vote_score}</p>
-        <button onClick={handleUpvote}>Upvote</button>
-        {auth.user.user_id === cheatsheet.user ? (
-          <>
-            <button onClick={handleSave}>Save</button>
-            <input
-              className="title"
-              type="text"
-              value={cheatsheet.title}
-              onChange={(event) => handleChange(event)}
-            />
-            <input
-              className="description"
-              placeholder="description"
-              type="text"
-              value={cheatsheet.description}
-              onChange={(event) => handleChange(event)}
-            />
-            <input
-              className="tags"
-              type="text"
-              placeholder="tags"
-              value={cheatsheet.tags!.join()}
-              onChange={(event) => handleChange(event)}
-            />
-          </>
-        ) : (
-          <>
-            <p>{cheatsheet.title}</p>
-            <p>{cheatsheet.description}</p>
-            <p>{cheatsheet.tags!.join()}</p>
-          </>
-        )}
+      <StyledCheatsheet>
         <CheatsheetContext.Provider value={{ cheatsheet, setCheatsheet }}>
+            {auth.user.user_id === cheatsheet.user.id ? (
+              <div>
+                <button onClick={handleSave}>Save</button>
+                <div className="header">
+                  <span>{cheatsheet.vote_score}</span>
+                  <button onClick={handleUpvote}>Upvote</button>
+                  <input
+                    className="title"
+                    type="text"
+                    value={cheatsheet.title}
+                    onChange={(event) => handleChange(event)}
+                  />
+                </div>
+                <input
+                  className="description"
+                  placeholder="description"
+                  type="text"
+                  value={cheatsheet.description}
+                  onChange={(event) => handleChange(event)}
+                />
+              </div>
+            ) : (
+              <div>
+                <div className="header">
+                  <span>{cheatsheet.vote_score}</span>
+                  <button onClick={handleUpvote}>Upvote</button>
+                  <p className="title">{cheatsheet.title}</p>
+                </div>
+                <p className="description">{cheatsheet.description}</p>
+              </div>
+            )}
+          <Tags />
           <Sections sections={cheatsheet.sections} />
         </CheatsheetContext.Provider>
-      </div>
+      </StyledCheatsheet>
     );
   }
 };

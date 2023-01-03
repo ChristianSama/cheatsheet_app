@@ -16,9 +16,15 @@ interface SectionProps {
 }
 
 const StyledSection = styled.div`
-  background-color: lightcoral;
+  background-color: white;
+  border: 1px solid #cecece;
+  border-radius: 5px;
   padding: 1rem;
   width: 300px;
+  input {
+    display: block;
+    width: 100%;
+  }
 `;
 
 const Section = ({ title, description, lines, index }: SectionProps) => {
@@ -47,7 +53,7 @@ const Section = ({ title, description, lines, index }: SectionProps) => {
 
   return (
     <StyledSection>
-      {auth.user.user_id === cheatsheet.user ? (
+      {auth.user.user_id === cheatsheet.user.id ? (
         <>
           <button onClick={() => handleRemoveSection(index)}>
             Remove Section
@@ -56,6 +62,7 @@ const Section = ({ title, description, lines, index }: SectionProps) => {
             className="title"
             type="text"
             value={title}
+            placeholder="Title"
             onChange={(event) => {
               handleSectionChange(event, index);
             }}
@@ -64,6 +71,7 @@ const Section = ({ title, description, lines, index }: SectionProps) => {
             className="description"
             type="text"
             value={description}
+            placeholder="Description"
             onChange={(event) => {
               handleSectionChange(event, index);
             }}

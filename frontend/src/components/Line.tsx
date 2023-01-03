@@ -46,7 +46,7 @@ const Line = ({ line, index, sectionIndex }: LineProps) => {
   return (
     <div>
       <StyledLine>
-        {auth.user.user_id === cheatsheet.user ? (
+        {auth.user.user_id === cheatsheet.user.id ? (
           <>
             <input
               className="description"
@@ -60,7 +60,7 @@ const Line = ({ line, index, sectionIndex }: LineProps) => {
               value={line.snippet}
               onChange={(event) => handleLineChange(event, index)}
             ></input>
-            <button onClick={() => handleRemove(index)}>Remove</button>
+            <button onClick={() => handleRemove(index)}>X</button>
           </>
         ) : (
           <>
