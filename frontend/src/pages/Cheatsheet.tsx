@@ -41,7 +41,7 @@ export const Cheatsheet = () => {
           setError(error);
         }
       );
-  }, []);
+  }, [params.id]);
 
   const handleSave = async () => {
     const outputCheatsheet = {...cheatsheet}

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import StyledCheatsheetList from "../StyledComponents/StyledCheatsheetList";
 import StyledCheatsheetListItem from "../StyledComponents/StyledCheatsheetListItem";
 import { ICheatsheet } from "../types";
@@ -43,7 +43,7 @@ export const CheatsheetList = () => {
     };
 
     fetchData().catch((err) => setError(err));
-  }, []);
+  }, [auth, navigate]);
 
   if (error) {
     return <div>Error: {error.message}</div>;

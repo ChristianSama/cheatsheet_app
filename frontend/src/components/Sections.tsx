@@ -1,8 +1,8 @@
 import produce from "immer";
-import React, { ChangeEvent, useContext, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { CheatsheetContext } from "../pages/Cheatsheet";
-import { ICheatsheet, ISection } from "../types";
+import { ISection } from "../types";
 import { AuthContext } from "../Utils/AuthProvider";
 import Section from "./Section";
 
