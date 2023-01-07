@@ -30,7 +30,7 @@ export const CheatsheetList = () => {
 
     const fetchData = async () => {
       const response = await fetch(
-        "http://localhost:8000/api/cheatsheets/",
+        `${process.env.REACT_APP_API_URL}cheatsheets/`,
         options
       );
       if (response.status === 401) {
